@@ -1,9 +1,10 @@
 // index.js
-const h = map=>({
+const h = root=>map=>({
     get: (target, name)=>{
-        if(map[name] && !target[name]) target[name] = require(map[name])
+        if(!target[name] && map[name]) 
+            target[name] = require(`${root}/${map[name]}`)
         return target[name]
     }
 })
-const f = map=>new Proxy({}, h(map))
+const f = root=>map=>new Proxy({}, h(root)(map))
 module.exports = f
